@@ -179,6 +179,7 @@ in
       helix
       tectonic
       yadm
+      rustup
       #  thunderbird
     ];
     shell = pkgs.zsh;
@@ -197,7 +198,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    xorg.xf86videoati xorg.xf86videoamdgpu xorg.xf86videointel gcc gimp gcc-arm-embedded git helix parted wget yadm
+    xorg.xf86videoati xorg.xf86videoamdgpu xorg.xf86videointel gcc gimp gcc-arm-embedded git helix parted wget yadm htop xfce.thunar
   ];
   
   system.stateVersion = "22.11"; # Did you read the comment?

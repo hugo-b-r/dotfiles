@@ -1,7 +1,8 @@
-icons = "awesome"
+[icons]
+icons = "material-nf"
 
 [theme]
-name = "modern"
+theme = "modern"
 
 [[block]]
 block = "sound"
@@ -9,7 +10,7 @@ block = "sound"
 [[block]]
 block = "time"
 interval = 1
-format = "%a %d/%m %T"
+format = " $icon $timestamp.datetime(f:'%a %d/%m %T', l:fr_FR) "
 
 [[block]]
 block = "battery"

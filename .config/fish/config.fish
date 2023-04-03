@@ -19,10 +19,10 @@ function fish_greeting
     echo -n "e"
     set_color normal
     echo " to everyone !"
-    echo ""
 end
 
 function fish_prompt
+    echo ""
     echo -n "[ " 
     set_color purple
     echo -n "$USER"

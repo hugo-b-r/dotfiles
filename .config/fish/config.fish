@@ -30,3 +30,8 @@ function fish_prompt
     echo "@$(/bin/hostname) ]"
     echo -n "\$ "
 end
+
+# convenient alisases
+alias gcom="git add --all; git commit -S"
+alias hx="helix"
+alias yadmcom="yadm commit -S"

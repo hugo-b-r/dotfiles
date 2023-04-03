@@ -293,7 +293,7 @@ input type:Mouse {
 ### Autostart
 #
     exec mako
-    exec_always pkill kanshi; exec kanshi
+    exec_always "pkill kanshi; kanshi"
     exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
     exec hash dbus-update-activation-environment 2>/dev/null && \
          dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK

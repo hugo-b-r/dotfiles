@@ -1,0 +1,6 @@
+[user]
+	email = hugoberthetrambaud@outlook.com
+	name = Hugo Berthet-Rambaud
+	signingkey = /home/hugo/.ssh/id_ed25519.pub
+[gpg]
+	format = ssh

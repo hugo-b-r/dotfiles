@@ -4,3 +4,5 @@
 	signingkey = /home/hugo/.ssh/id_ed25519.pub
 [gpg]
 	format = ssh
+[core]
+	editor = helix

@@ -1,7 +1,7 @@
 colors:
   primary:
-    background: "0x2a2f38"
-    foreground: "0xe1e3e4"
+      background: "0x2a2f38"
+      foreground: "0xe1e3e4"
 
   normal:
     black: "0x181a1c"
@@ -22,3 +22,13 @@ colors:
     magenta: "0xba9cf3"
     cyan: "0xf69c5e"
     white: "0xe1e3e4"
+
+font:
+  normal:
+    family:
+      JetBrainsMono Nerd Font
+
+scrolling: 
+  history: 10000
+
+working_directory: C:\Users\hugob

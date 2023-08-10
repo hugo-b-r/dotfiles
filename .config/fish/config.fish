@@ -27,7 +27,7 @@ function fish_prompt
     set_color purple
     echo -n "$USER"
     set_color normal
-    echo "@$(/bin/hostname) ]"
+    echo "@$(/bin/hostname):$(pwd) ]"
     echo -n "\$ "
 end
 

@@ -32,3 +32,6 @@ scrolling:
   history: 10000
 
 working_directory: C:\Users\hugob
+
+shell:
+  program: fish

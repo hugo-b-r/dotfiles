@@ -34,4 +34,5 @@ end
 # convenient alisases
 alias gcom="git add --all; git commit -S"
 alias hx="helix"
-alias yadmcom="yadm commit -S"
+alias yadmcom="yadm commit -S"eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)

@@ -179,7 +179,7 @@ file-types = ["c"] # TODO: ["h"]
 roots = []
 comment-token = "//"
 language-server = { command = "clangd" }
-indent = { tab-width = 2, unit = "  " }
+indent = { tab-width = 4, unit = "  " }
 
 [language.debugger]
 name = "lldb-vscode"

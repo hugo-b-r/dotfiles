@@ -9,6 +9,7 @@ call vundle#begin()
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'dense-analysis/ale'
 	Plugin 'drewtempelmeyer/palenight.vim'
+	Plugin 'jiangmiao/auto-pairs'
 
 call vundle#end()            " required
 filetype plugin indent on    "
@@ -17,6 +18,7 @@ set number
 syntax on
 colorscheme palenight
 set tabstop=4
+set sw=4
 " This is enabled by default in Neovim by the way
 filetype on             " enable filetype detection
 filetype plugin on      " load file-specific plugins

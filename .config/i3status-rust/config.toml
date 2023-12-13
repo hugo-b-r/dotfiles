@@ -15,4 +15,4 @@ format = " $icon $timestamp.datetime(f:'%a %d/%m %T', l:fr_FR) "
 [[block]]
 block = "battery"
 interval = 5
-format = "{percentage} {time}"
+format = " $icon $percentage "

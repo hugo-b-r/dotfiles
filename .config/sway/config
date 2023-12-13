@@ -20,7 +20,7 @@ set $right l
 set $term alacritty
 
 # The runner
-set $menu wofi --gtk-dark --show run
+set $menu fuzzel
 
 
 
@@ -264,17 +264,21 @@ input type:Mouse {
 ### Status Bar:
 #
     # # Read `man 5 sway-bar` for more information about this section.
+    # bar {
+    #     font pango:DejaVu Sans Mono, FontAwesome 12
+    #     position top
+    #     status_command i3status-rs
+    #     colors {
+    #         background             #000000
+    #         statusline             #ffffff
+    #         separator              #ffffff
+    #         focused_workspace      #ffffff #2a2f38 #ffffff
+    #         urgent_workspace       #900000 #900000 #ffffff
+    #      }
+    # }
+
     bar {
-        font pango:DejaVu Sans Mono, FontAwesome 12
-        position top
-        status_command i3status-rs
-        colors {
-            background             #000000
-            statusline             #ffffff
-            separator              #ffffff
-            focused_workspace      #ffffff #2a2f38 #ffffff
-            urgent_workspace       #900000 #900000 #ffffff
-         }
+        status_command waybar
     }
 
 

@@ -27,7 +27,7 @@ set $menu wofi --gtk-dark --show run
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in @datadir@/backgrounds/sway/)
-output * bg ~/wallpaper.jpg fill
+output * bg ~/background.jpg fill
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -41,13 +41,13 @@ exec swayidle -w \
          timeout 300 'swaylock -f -c 000000' -i ~/wallpaper.jpg \
          timeout 600 'swaymsg "output * dpms off"' \
               resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000' -i ~/config/x/current_wallpaper 
+         before-sleep 'swaylock -f -c 000000' -i ~/wallpaper.jpg
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
-bindsym $mod+Shift+t exec "swaylock -i ~/config/x/current_wallpaper"
+bindsym $mod+Shift+t exec "swaylock -i ~/wallpaper.jpg"
 
 
 
@@ -56,8 +56,13 @@ bindsym $mod+Shift+t exec "swaylock -i ~/config/x/current_wallpaper"
 input * xkb_layout "fr"
 
 input type:touchpad {
-        tap enabled
-        natural_scroll enabled
+    tap enabled
+    natural_scroll enabled
+    tap_button_map lrm
+    click_method clickfinger
+    scroll_factor 0.8
+    accel_profile adaptive
+    pointer_accel 0.5
 }
 
 input type:Mouse {
@@ -105,13 +110,14 @@ input type:Mouse {
 # Sound and brightness
 #
     # Brightness
-    bindsym XF86MonBrightnessDown exec light -U 2
-    bindsym XF86MonBrightnessUp exec light -A 2
+    bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
 
     # Volume
     bindsym XF86AudioRaiseVolume exec 'amixer set Master 1%+
     bindsym XF86AudioLowerVolume exec 'amixer set Master 1%-'
     bindsym XF86AudioMute exec 'amixer set Master toggle'
+    bindsym XF86AudioMicMute exec 'amixer set Capture toggle'
 
 #     
 # Screenshots
@@ -257,7 +263,7 @@ input type:Mouse {
 
 ### Status Bar:
 #
-    # Read `man 5 sway-bar` for more information about this section.
+    # # Read `man 5 sway-bar` for more information about this section.
     bar {
         font pango:DejaVu Sans Mono, FontAwesome 12
         position top
@@ -268,7 +274,7 @@ input type:Mouse {
             separator              #ffffff
             focused_workspace      #ffffff #2a2f38 #ffffff
             urgent_workspace       #900000 #900000 #ffffff
-        }
+         }
     }
 
 
@@ -292,9 +298,9 @@ input type:Mouse {
 
 ### Autostart
 #
+    exec nm-applet
     exec mako
     exec_always "pkill kanshi; kanshi"
     exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
     exec hash dbus-update-activation-environment 2>/dev/null && \
          dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
-    

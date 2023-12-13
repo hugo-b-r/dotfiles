@@ -1,9 +1,9 @@
 [user]
 	email = hugoberthetrambaud@outlook.com
 	name = Hugo Berthet-Rambaud
-	signingkey = /home/hugob/.ssh/id_ed25519
+	signingkey = /home/hugo/.ssh/id_ed25519
 [core]
-	editor = flatpak run re.sonny.Commit
+	editor = hx
 [gpg]
 	format = ssh
 [credential "https://github.com"]

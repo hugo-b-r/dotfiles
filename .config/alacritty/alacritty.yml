@@ -1,35 +1,35 @@
 colors:
   primary:
-      background: "0x2a2f38"
-      foreground: "0xe1e3e4"
+    background: "0x2c2e34"
+    foreground: "0xe2e2e3"
 
   normal:
-    black: "0x181a1c"
-    red: "0xff6578"
-    green: "0x9dd274"
-    yellow: "0xeacb64"
-    blue: "0x72cce8"
-    magenta: "0xba9cf3"
-    cyan: "0xf69c5e"
-    white: "0xe1e3e4"
+    black: "0x181819"
+    red: "0xfc5d7c"
+    green: "0x9ed072"
+    yellow: "0xe7c664"
+    blue: "0x76cce0"
+    magenta: "0xb39df3"
+    cyan: "0xf39660"
+    white: "0xe2e2e3"
 
   bright:
-    black: "0x828a9a"
-    red: "0xff6578"
-    green: "0x9dd274"
-    yellow: "0xeacb64"
-    blue: "0x72cce8"
-    magenta: "0xba9cf3"
-    cyan: "0xf69c5e"
-    white: "0xe1e3e4"
+    black: "0x7f8490"
+    red: "0xfc5d7c"
+    green: "0x9ed072"
+    yellow: "0xe7c664"
+    blue: "0x76cce0"
+    magenta: "0xb39df3"
+    cyan: "0xf39660"
+    white: "0xe2e2e3"
 
 font:
   normal:
     family:
-      JetBrainsMono Nerd Font
+      'JetBrainsMono Nerd Font'
 
 scrolling: 
   history: 10000
 
-working_directory: C:\Users\hugob
+working_directory: ~
 

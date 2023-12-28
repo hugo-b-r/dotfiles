@@ -8,11 +8,17 @@ theme = "modern"
 block = "sound"
 
 [[block]]
+block = "battery"
+interval = 5
+format = " $icon $percentage $time $power "
+
+[[block]]
+block = "nvidia_gpu"
+interval = 1
+format = " $icon GTX 1650 Ti $utilization $temperature $clocks "
+
+[[block]]
 block = "time"
 interval = 1
 format = " $icon $timestamp.datetime(f:'%a %d/%m %T', l:fr_FR) "
 
-[[block]]
-block = "battery"
-interval = 5
-format = " $icon $percentage "

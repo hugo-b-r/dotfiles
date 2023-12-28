@@ -102,7 +102,7 @@ input type:Mouse {
     bindsym $mod+Shift+r reload
 
     # exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit' -b 'Shutdown' 'systemctl poweroff'
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Log Out' 'swaymsg exit' -b 'Reboot' 'systemctl reboot' -b 'Shutdown' 'systemctl poweroff' 
 
 
 
@@ -157,7 +157,7 @@ input type:Mouse {
     bindsym $mod+Shift+eacute move container to workspace number $ws2
     bindsym $mod+Shift+quotedbl move container to workspace number $ws3
     bindsym $mod+Shift+apostrophe move container to workspace number $ws4
-    bindsym $mod+Shift+5 move container to workspace number $ws5
+    bindsym $mod+Shift+parenleft move container to workspace number $ws5
     bindsym $mod+Shift+minus move container to workspace number $ws6
     bindsym $mod+Shift+egrave move container to workspace number $ws7
     bindsym $mod+Shift+underscore move container to workspace number $ws8
@@ -278,7 +278,9 @@ input type:Mouse {
     # }
 
     bar {
-        status_command waybar
+        gaps 10 10 10 10
+        swaybar_command waybar
+        workspace_buttons yes
     }
 
 
@@ -290,7 +292,7 @@ input type:Mouse {
 
     # Colors
     # class                 border  backgr. text    indicator child_border
-    client.focused          #ffffff #2a2f38 #ffffff #ffffff   #ffffff
+    client.focused          #dddddd #2a2f38 #ffffff #dddddd   #dddddd
     client.focused_inactive #ffffff #2a2f38 #ffffff #ffffff   #ffffff
     client.unfocused        #333333 #222222 #888888 #292d2e   #222222
     client.urgent           #2f343a #900000 #ffffff #900000   #900000
@@ -298,13 +300,23 @@ input type:Mouse {
 
     gaps inner 20
 
-
+output eDP-1 scale 2
 
 ### Autostart
 #
     exec nm-applet
     exec mako
-    exec_always "pkill kanshi; kanshi"
+    #exec_always "pkill kanshi; kanshi"
     exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
     exec hash dbus-update-activation-environment 2>/dev/null && \
          dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+    # GTK
+exec {
+    gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Sweet-Dark-v40'
+    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Sweet-Dark-v40'
+    gsettings set org.gnome.desktop.interface icon-theme 'Sweet-Rainbow'
+    gsettings set org.gnome.desktop.interface cursor-size '48'
+    gsettings set org.gnome.desktop.interface font-name 'Roboto Slab 10'
+}

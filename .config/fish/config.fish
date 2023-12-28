@@ -2,7 +2,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-# function fish_greeting
+function fish_greeting
 #     set_color green
 #     echo -n "W"
 #     set_color yellow
@@ -19,9 +19,9 @@ end
 #     echo -n "e"
 #     set_color normal
 #     echo " to everyone !"
-# end
+end
 
-# function fish_prompt
+#function fish_prompt
 #     echo ""
 #     # echo -n "[ " 
 #     set_color purple
@@ -33,6 +33,7 @@ end
 
 # convenient alisases
 alias gcom="git add --all; git commit -S"
+alias prime-run="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
 #alias hx="helix"
 alias yadmcom="yadm commit -S"eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)

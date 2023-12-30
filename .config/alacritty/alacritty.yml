@@ -23,13 +23,36 @@ colors:
     cyan: "0xf39660"
     white: "0xe2e2e3"
 
-font:
-  normal:
-    family:
-      'JetBrainsMono Nerd Font'
-
 scrolling: 
   history: 10000
 
 working_directory: ~
+window:
+  dimensions:
+    columns: 107
+    lines: 35
+  #opacity: 0.97
+  scrolling:
+    history: 7777777
+
+  font:
+    normal:
+      family:
+        'JetBrainsMono Nerd Font'
+    bold:
+      family:
+        'JetBrainsMono Nerd Font Bold' 
+    italic:
+      family:
+        'JetBrainsMono Nerd Font Italic'        
+
+cursor:
+  style:
+    blinking: "On"
+  blink_interval: 420
+  blink_timeout: 0
+    
+
+mouse:
+  hide_when_typing: true
 

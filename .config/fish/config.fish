@@ -32,7 +32,8 @@ end
 # end
 
 # convenient alisases
-alias gcom="git add --all; git commit -S"
+alias gcoma="git add --all; git commit -S"
+alias gcom="git commit -S"
 alias prime-run="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
 #alias hx="helix"
 alias yadmcom="yadm commit -S"

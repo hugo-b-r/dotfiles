@@ -20,14 +20,14 @@ set $right l
 set $term alacritty
 
 # The runner
-set $menu wofi --gtk-dark --show run
+set $menu fuzzel
 
 
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in @datadir@/backgrounds/sway/)
-output * bg ~/wallpaper.jpg fill
+output * bg ~/background.jpg fill
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -41,13 +41,13 @@ exec swayidle -w \
          timeout 300 'swaylock -f -c 000000' -i ~/wallpaper.jpg \
          timeout 600 'swaymsg "output * dpms off"' \
               resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000' -i ~/config/x/current_wallpaper 
+         before-sleep 'swaylock -f -c 000000' -i ~/wallpaper.jpg
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
-bindsym $mod+Shift+t exec "swaylock -i ~/config/x/current_wallpaper"
+bindsym $mod+Shift+t exec "swaylock -i ~/wallpaper.jpg"
 
 
 
@@ -56,8 +56,13 @@ bindsym $mod+Shift+t exec "swaylock -i ~/config/x/current_wallpaper"
 input * xkb_layout "fr"
 
 input type:touchpad {
-        tap enabled
-        natural_scroll enabled
+    tap enabled
+    natural_scroll enabled
+    tap_button_map lrm
+    click_method clickfinger
+    scroll_factor 0.8
+    accel_profile adaptive
+    pointer_accel 0.5
 }
 
 input type:Mouse {
@@ -97,7 +102,7 @@ input type:Mouse {
     bindsym $mod+Shift+r reload
 
     # exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit' -b 'Shutdown' 'systemctl poweroff'
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Log Out' 'swaymsg exit' -b 'Reboot' 'systemctl reboot' -b 'Shutdown' 'systemctl poweroff' 
 
 
 
@@ -105,13 +110,14 @@ input type:Mouse {
 # Sound and brightness
 #
     # Brightness
-    bindsym XF86MonBrightnessDown exec light -U 2
-    bindsym XF86MonBrightnessUp exec light -A 2
+    bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
 
     # Volume
     bindsym XF86AudioRaiseVolume exec 'amixer set Master 1%+
     bindsym XF86AudioLowerVolume exec 'amixer set Master 1%-'
     bindsym XF86AudioMute exec 'amixer set Master toggle'
+    bindsym XF86AudioMicMute exec 'amixer set Capture toggle'
 
 #     
 # Screenshots
@@ -151,7 +157,7 @@ input type:Mouse {
     bindsym $mod+Shift+eacute move container to workspace number $ws2
     bindsym $mod+Shift+quotedbl move container to workspace number $ws3
     bindsym $mod+Shift+apostrophe move container to workspace number $ws4
-    bindsym $mod+Shift+5 move container to workspace number $ws5
+    bindsym $mod+Shift+parenleft move container to workspace number $ws5
     bindsym $mod+Shift+minus move container to workspace number $ws6
     bindsym $mod+Shift+egrave move container to workspace number $ws7
     bindsym $mod+Shift+underscore move container to workspace number $ws8
@@ -257,18 +263,24 @@ input type:Mouse {
 
 ### Status Bar:
 #
-    # Read `man 5 sway-bar` for more information about this section.
+    # # Read `man 5 sway-bar` for more information about this section.
+    # bar {
+    #     font pango:DejaVu Sans Mono, FontAwesome 12
+    #     position top
+    #     status_command i3status-rs
+    #     colors {
+    #         background             #000000
+    #         statusline             #ffffff
+    #         separator              #ffffff
+    #         focused_workspace      #ffffff #2a2f38 #ffffff
+    #         urgent_workspace       #900000 #900000 #ffffff
+    #      }
+    # }
+
     bar {
-        font pango:DejaVu Sans Mono, FontAwesome 12
-        position top
-        status_command i3status-rs
-        colors {
-            background             #000000
-            statusline             #ffffff
-            separator              #ffffff
-            focused_workspace      #ffffff #2a2f38 #ffffff
-            urgent_workspace       #900000 #900000 #ffffff
-        }
+        gaps 10 10 10 10
+        swaybar_command waybar
+        workspace_buttons yes
     }
 
 
@@ -280,7 +292,7 @@ input type:Mouse {
 
     # Colors
     # class                 border  backgr. text    indicator child_border
-    client.focused          #ffffff #2a2f38 #ffffff #ffffff   #ffffff
+    client.focused          #dddddd #2a2f38 #ffffff #dddddd   #dddddd
     client.focused_inactive #ffffff #2a2f38 #ffffff #ffffff   #ffffff
     client.unfocused        #333333 #222222 #888888 #292d2e   #222222
     client.urgent           #2f343a #900000 #ffffff #900000   #900000
@@ -288,13 +300,23 @@ input type:Mouse {
 
     gaps inner 20
 
-
+output eDP-1 scale 2
 
 ### Autostart
 #
+    exec nm-applet
     exec mako
-    exec_always "pkill kanshi; kanshi"
+    #exec_always "pkill kanshi; kanshi"
     exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
     exec hash dbus-update-activation-environment 2>/dev/null && \
          dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
-    
+
+    # GTK
+exec {
+    gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Sweet-Dark-v40'
+    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Sweet-Dark-v40'
+    gsettings set org.gnome.desktop.interface icon-theme 'Sweet-Rainbow'
+    gsettings set org.gnome.desktop.interface cursor-size '48'
+    gsettings set org.gnome.desktop.interface font-name 'Roboto Slab 10'
+}

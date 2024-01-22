@@ -42,12 +42,19 @@ let
       gsettings set $gnome_schema gtk-theme 'Dracula'
     '';
   };
+  tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
 
 in
 
 {
   imports =
     [ # Include the results of the hardware scan.
+      # <nixos-hardware/common/gpu/disable.nix>
+      # <nixos-hardware/common/pc/laptop/acpi_call.nix>
+      # <nixos-hardware/common/cpu/intel/cpu-only.nix>
+      <nixos-hardware/lenovo/thinkpad/x1-extreme/default.nix>
+
+
       ./hardware-configuration.nix
     ];
 
@@ -67,6 +74,7 @@ in
 
   # boot kernel parameters
   boot.kernelParams = [ "psmouse.synaptics_intertouch=0" ];
+  boot.initrd.availableKernelModules = [ "battery" ];
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
@@ -96,52 +104,110 @@ in
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
 
-  hardware.nvidia = {
+  # NVIDIA F*** YOU
 
-    # Modesetting is required.
-    modesetting.enable = true;
+  # This runs only intel/amdgpu igpus and nvidia dgpus do not drain power.
 
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = true; 
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = true;
+  # ##### disable nvidia, very nice battery life.
+  # boot.extraModprobeConfig = ''
+  #   blacklist nouveau
+  #   options nouveau modeset=0
+  # '';
+  
+  # services.udev.extraRules = ''
+  #   # Remove NVIDIA USB xHCI Host Controller devices, if present
+  #   ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c0330", ATTR{power/control}="auto", ATTR{remove}="1"
 
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-    # Only available from driver 515.43.04+
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
+  #   # Remove NVIDIA USB Type-C UCSI devices, if present
+  #   ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c8000", ATTR{power/control}="auto", ATTR{remove}="1"
 
-    # Enable the Nvidia settings menu,
-	# accessible via `nvidia-settings`.
-    nvidiaSettings = true;
+  #   # Remove NVIDIA Audio devices, if present
+  #   ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x040300", ATTR{power/control}="auto", ATTR{remove}="1"
 
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  #   # Remove NVIDIA VGA/3D controller devices
+  #   ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
+  # '';
+  # boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
 
-    prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-    };
+   hardware.nvidia = {
+
+     # Modesetting is required.
+     modesetting.enable = true;
+
+     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+     powerManagement.enable = true; 
+     # Fine-grained power management. Turns off GPU when not in use.
+     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+     powerManagement.finegrained = true;
+
+      # Use the NVidia open source kernel module (not to be confused with the
+      # independent third-party "nouveau" open source driver).
+      # Support is limited to the Turing and later architectures. Full list of 
+      # supported GPUs is at: 
+      # https://github.com/NVIDIA/open-gpu-kernel-modulescompatible-gpus 
+      # Only available from driver 515.43.04+
+      # Currently alpha-quality/buggy, so false is currently the recommended setting.
+     open = false;
+
+      # Enable the Nvidia settings menu,
+	  # accessible via `nvidia-settings`.
+     nvidiaSettings = true;
+
+      # Optionally, you may need to select the appropriate driver version for your specific GPU.
+     package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+     prime = {
+       offload = {
+         enable = true;
+         enableOffloadCmd = true;
+       };
+       intelBusId = "PCI:0:2:0";
+       nvidiaBusId = "PCI:1:0:0";
+     };
     
-  };
+   };
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = false;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.enableHidpi = true;
+  # # Enable the KDE Plasma Desktop Environment.
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      default_session = {
+        command = "tuigreet --time --cmd \"sway --unsupported-gpu\"";
+        user = "hugo";
+      };
+    };
+  };
+
+  # # this is a life saver.
+  # # literally no documentation about this anywhere.
+  # # might be good to write about this...
+  # # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
+  # systemd.services.greetd.serviceConfig = {
+  #   Type = "idle";
+  #   StandardInput = "tty";
+  #   StandardOutput = "tty";
+  #   StandardError = "journal"; # Without this errors will spam on screen
+  #   # Without these bootlogs will spam on screen
+  #   TTYReset = true;
+  #   TTYVHangup = true;
+  #   TTYVTDisallocate = true;
+  # };
+
+  services.xserver.displayManager.sddm = {
+    enable = false;
+    enableHidpi = true;
+    wayland.enable = true;
+  };
   services.xserver.desktopManager.plasma5.enable = true;
   services.xserver.displayManager.defaultSession = "plasmawayland";
+  services.xserver.monitorSection = ''
+    DisplaySize 344 215
+  '';
 
 
   # Configure keymap in X11
@@ -191,7 +257,11 @@ in
       gh
       git
       yadm
-      
+      zathura
+      nerdfonts
+      pciutils
+      vlc
+      networkmanager-openconnect
     #  thunderbird
     ];
     shell = pkgs.fish;
@@ -205,6 +275,7 @@ in
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    htop
     # Fetch
     cpufetch
     neofetch
@@ -229,8 +300,19 @@ in
     mako
     wdisplays
     i3status-rust
+    greetd.greetd
+    greetd.tuigreet
+    networkmanagerapplet
+    font-awesome
+    dejavu_fonts
+    light
+    libsForQt5.bluedevil
   ];
 
+  security.pam.loginLimits = [
+
+  { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+  ];
   
   programs.fish.enable = true;
 
@@ -243,23 +325,52 @@ in
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
+    extraOptions = ["--unsupported-gpu"];
   };
 
 
   # laptop services
   services.thermald.enable = true;
-  services.auto-cpufreq.enable = true;
-  services.auto-cpufreq.settings = {
-    battery = {
-       governor = "powersave";
-       turbo = "never";
-    };
-    charger = {
-       governor = "performance";
-       turbo = "auto";
+  #services.auto-cpufreq.enable = true;
+  #services.auto-cpufreq.settings = {
+  #   battery = {
+  #      governor = "powersave";
+  #      turbo = "never";
+  #   };
+  #   charger = {
+  #      governor = "performance";
+  #      turbo = "auto";
+  #   };
+  # };
+
+
+  # Better scheduling for CPU cycles - thanks System76!!!
+  services.system76-scheduler.settings.cfsProfiles.enable = true;
+
+  # Enable TLP (better than gnomes internal power manager)
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_BOOST_ON_AC = 1;
+      CPU_BOOST_ON_BAT = 0;
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
     };
   };
+
+  # Disable GNOMEs power management
+  services.power-profiles-daemon.enable = false;
+
+  # Enable powertop
   powerManagement.powertop.enable = true;
+
+  
+  systemd.tmpfiles.rules = map
+  (e:
+  "w /sys/bus/${e}/power/control - - - - auto"
+  ) [
+    "usb/devices/1-8/" # USB Camera
+  ];
 
 
   

@@ -103,6 +103,24 @@ input type:Mouse {
 
     # exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Log Out' 'swaymsg exit' -b 'Reboot' 'systemctl reboot' -b 'Shutdown' 'systemctl poweroff' 
+    
+    # shutdown / restart / suspend...
+    set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (CTRL+s) shutdown
+
+    mode "$mode_system" {
+        bindsym l exec --no-startup-id $swaylock, mode "default"
+        bindsym e exec --no-startup-id swaymsg exit, mode "default"
+        bindsym s exec --no-startup-id $swaylock && systemctl suspend, mode "default"
+        bindsym h exec --no-startup-id $swaylock && systemctl hibernate, mode "default"
+        bindsym r exec --no-startup-id systemctl reboot, mode "default"
+        bindsym Ctrl+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+    }
+
+    bindsym $mod+BackSpace mode "$mode_system"
 
 
 

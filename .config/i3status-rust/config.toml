@@ -12,10 +12,10 @@ block = "battery"
 interval = 5
 format = " $icon $percentage $time $power "
 
-[[block]]
-block = "nvidia_gpu"
-interval = 1
-format = " $icon GTX 1650 Ti $utilization $temperature $clocks "
+# [[block]]
+# block = "nvidia_gpu"
+# interval = 1
+# format = " $icon GTX 1650 Ti $utilization $temperature $clocks "
 
 [[block]]
 block = "time"

@@ -4,47 +4,46 @@
 
 { config, pkgs, lib, ... }:
 
-let 
-  # bash script to let dbus know about important env variables and
-  # propagate them to relevent services run at the end of sway config
-  # see
-  # https://github.com/emersion/xdg-desktop-portal-wlr/wiki/"It-doesn't-work"-Troubleshooting-Checklist
-  # note: this is pretty much the same as  /etc/sway/config.d/nixos.conf but also restarts  
-  # some user services to make sure they have the correct environment variables
-  dbus-sway-environment = pkgs.writeTextFile {
-    name = "dbus-sway-environment";
-    destination = "/bin/dbus-sway-environment";
-    executable = true;
+# let 
+#   # bash script to let dbus know about important env variables and
+#   # propagate them to relevent services run at the end of sway config
+#   # see
+#   # https://github.com/emersion/xdg-desktop-portal-wlr/wiki/"It-doesn't-work"-Troubleshooting-Checklist
+#   # note: this is pretty much the same as  /etc/sway/config.d/nixos.conf but also restarts  
+#   # some user services to make sure they have the correct environment variables
+#   dbus-sway-environment = pkgs.writeTextFile {
+#     name = "dbus-sway-environment";
+#     destination = "/bin/dbus-sway-environment";
+#     executable = true;
 
-    text = ''
-      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-      systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-      systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-    '';
-    };
+#     text = ''
+#       dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+#       systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+#       systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+#     '';
+#     };
 
-  # currently, there is some friction between sway and gtk:
-  # https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
-  # the suggested way to set gtk settings is with gsettings
-  # for gsettings to work, we need to tell it where the schemas are
-  # using the XDG_DATA_DIR environment variable
-  # run at the end of sway config
-  configure-gtk = pkgs.writeTextFile {
-    name = "configure-gtk";
-    destination = "/bin/configure-gtk";
-    executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Dracula'
-    '';
-  };
-  tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
+#   # currently, there is some friction between sway and gtk:
+#   # https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland
+#   # the suggested way to set gtk settings is with gsettings
+#   # for gsettings to work, we need to tell it where the schemas are
+#   # using the XDG_DATA_DIR environment variable
+#   # run at the end of sway config
+# configure-gtk = pkgs.writeTextFile {
+#   name = "configure-gtk";
+#   destination = "/bin/configure-gtk";
+#   executable = true;
+#   text = let
+#     schema = pkgs.gsettings-desktop-schemas;
+#     datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+#   in ''
+#     export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+#     gnome_schema=org.gnome.desktop.interface
+#     gsettings set $gnome_schema gtk-theme 'Dracula'
+#   '';
+# };
 
-in
+# in
 
 {
   imports =
@@ -100,6 +99,8 @@ in
     driSupport = true;
     driSupport32Bit = true;
   };
+  hardware.trackpoint.device = "TPPS/2 Elan TrackPoint";
+
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
@@ -171,40 +172,8 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
-  # # Enable the KDE Plasma Desktop Environment.
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      default_session = {
-        command = "tuigreet --time --cmd \"sway --unsupported-gpu\"";
-        user = "hugo";
-      };
-    };
-  };
-
-  # # this is a life saver.
-  # # literally no documentation about this anywhere.
-  # # might be good to write about this...
-  # # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
-  # systemd.services.greetd.serviceConfig = {
-  #   Type = "idle";
-  #   StandardInput = "tty";
-  #   StandardOutput = "tty";
-  #   StandardError = "journal"; # Without this errors will spam on screen
-  #   # Without these bootlogs will spam on screen
-  #   TTYReset = true;
-  #   TTYVHangup = true;
-  #   TTYVTDisallocate = true;
-  # };
-
-  services.xserver.displayManager.sddm = {
-    enable = false;
-    enableHidpi = true;
-    wayland.enable = true;
-  };
-  services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.displayManager.defaultSession = "plasmawayland";
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
   services.xserver.monitorSection = ''
     DisplaySize 344 215
   '';
@@ -249,11 +218,8 @@ in
     packages = with pkgs; [
       fish
       helix
-      kmail
       firefox
-      kate
       alacritty
-      libsForQt5.bismuth
       gh
       git
       yadm
@@ -261,7 +227,7 @@ in
       nerdfonts
       pciutils
       vlc
-      networkmanager-openconnect
+      # networkmanager-openconnect
     #  thunderbird
     ];
     shell = pkgs.fish;
@@ -274,6 +240,14 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    # gnome extensions
+    gnomeExtensions.dash-to-dock
+    gnomeExtensions.alphabetical-app-grid
+    gnomeExtensions.battery-time-2
+    gnomeExtensions.pano
+    gnome.gnome-tweaks
+    gnome.gnome-shell-extensions
+
     wget
     htop
     # Fetch
@@ -284,64 +258,47 @@ in
     # Sway & etc.
     sway
     fuzzel
-    dbus
-    dbus-sway-environment
+    # dbus
+    # dbus-sway-environment
     alacritty
-    wayland
-    configure-gtk
-    xdg-utils
-    glib
-    gnome3.adwaita-icon-theme
+    # wayland
     swaylock
     swayidle
     grim
     slurp
-    wl-clipboard
+    # wl-clipboard
     mako
-    wdisplays
+    # wdisplays
     i3status-rust
-    greetd.greetd
-    greetd.tuigreet
-    networkmanagerapplet
+    # networkmanagerapplet
     font-awesome
     dejavu_fonts
-    light
-    libsForQt5.bluedevil
   ];
 
-  security.pam.loginLimits = [
-
-  { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
-  ];
-  
   programs.fish.enable = true;
+  services.flatpak.enable = true;
 
-  services.dbus.enable = true;
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
+  # services.dbus.enable = true;
   programs.sway = {
     enable = true;
-    wrapperFeatures.gtk = true;
+    # wrapperFeatures.gtk = true;
     extraOptions = ["--unsupported-gpu"];
   };
 
 
   # laptop services
   services.thermald.enable = true;
-  #services.auto-cpufreq.enable = true;
-  #services.auto-cpufreq.settings = {
-  #   battery = {
-  #      governor = "powersave";
-  #      turbo = "never";
-  #   };
-  #   charger = {
-  #      governor = "performance";
-  #      turbo = "auto";
-  #   };
-  # };
+  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+     battery = {
+        governor = "powersave";
+        turbo = "never";
+     };
+     charger = {
+        governor = "performance";
+        turbo = "auto";
+     };
+   };
 
 
   # Better scheduling for CPU cycles - thanks System76!!!
@@ -354,27 +311,24 @@ in
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 0;
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave"; 
+
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MIN_PERF_ON_BAT = 0;
+      CPU_MAX_PERF_ON_BAT = 20;
     };
   };
 
-  # Disable GNOMEs power management
   services.power-profiles-daemon.enable = false;
 
   # Enable powertop
   powerManagement.powertop.enable = true;
 
   
-  systemd.tmpfiles.rules = map
-  (e:
-  "w /sys/bus/${e}/power/control - - - - auto"
-  ) [
-    "usb/devices/1-8/" # USB Camera
-  ];
-
-
-  
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

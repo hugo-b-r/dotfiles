@@ -4,8 +4,6 @@
 	signingkey = /home/hugo/.ssh/id_ed25519
 [core]
 	editor = hx
-[gpg]
-	format = ssh
 [credential "https://github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential

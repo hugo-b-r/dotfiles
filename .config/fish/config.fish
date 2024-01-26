@@ -32,11 +32,11 @@ end
 # end
 
 # convenient alisases
-alias gcoma="git add --all; git commit -S"
-alias gcom="git commit -S"
+alias gcoma="git add --all; git commit"
+alias gcom="git commit"
 alias prime-run="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
 #alias hx="helix"
 alias yadmcom="yadm commit -S"
-#eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/programs:$PATH"

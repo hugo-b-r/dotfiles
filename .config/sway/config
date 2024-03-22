@@ -329,11 +329,4 @@ output eDP-1 scale 2
          dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
     # GTK
-exec {
-    gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
-    gsettings set org.gnome.desktop.interface gtk-theme 'Sweet-Dark-v40'
-    gsettings set org.gnome.desktop.interface.wm.preferences theme 'Sweet-Dark-v40'
-    gsettings set org.gnome.desktop.interface icon-theme 'Sweet-Rainbow'
-    gsettings set org.gnome.desktop.interface cursor-size '24'
-    gsettings set org.gnome.desktop.interface font-name 'Roboto Slab 10'
-}
+exec gsettings set org.gnome.desktop.interface cursor-size '24'

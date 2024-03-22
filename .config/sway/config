@@ -296,7 +296,6 @@ input type:Mouse {
     # }
 
     bar {
-        gaps 10 10 10 10
         swaybar_command waybar
         workspace_buttons yes
     }
@@ -335,6 +334,6 @@ exec {
     gsettings set org.gnome.desktop.interface gtk-theme 'Sweet-Dark-v40'
     gsettings set org.gnome.desktop.interface.wm.preferences theme 'Sweet-Dark-v40'
     gsettings set org.gnome.desktop.interface icon-theme 'Sweet-Rainbow'
-    gsettings set org.gnome.desktop.interface cursor-size '48'
+    gsettings set org.gnome.desktop.interface cursor-size '24'
     gsettings set org.gnome.desktop.interface font-name 'Roboto Slab 10'
 }

@@ -39,4 +39,4 @@ alias prime-run="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
 alias yadmcom="yadm commit -S"
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
-export PATH="$HOME/.cargo/bin:$HOME/programs:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/programs:$HOME/.local/bin:$PATH:$HOME/programs/flutter/bin:$HOME/programs/android-studio/bin:$HOME/programs/dart-sdk/bin"

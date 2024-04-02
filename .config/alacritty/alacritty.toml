@@ -39,14 +39,3 @@ history = 10000
 columns = 107
 lines = 35
 
-[window.font.bold]
-family = "JetBrainsMono Nerd Font Bold"
-
-[window.font.italic]
-family = "JetBrainsMono Nerd Font Italic"
-
-[window.font.normal]
-family = "JetBrainsMono Nerd Font"
-
-[window.scrolling]
-history = 7777777

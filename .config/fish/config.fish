@@ -3,22 +3,7 @@ if status is-interactive
 end
 
 function fish_greeting
-#     set_color green
-#     echo -n "W"
-#     set_color yellow
-#     echo -n "e"
-#     set_color cyan
-#     echo -n "l"
-#     set_color red
-#     echo -n "c"
-#     set_color purple
-#     echo -n "o"
-#     set_color blue
-#     echo -n "m"
-#     set_color brblue
-#     echo -n "e"
-#     set_color normal
-#     echo " to everyone !"
+    fortune | cowsay
 end
 
 #function fish_prompt

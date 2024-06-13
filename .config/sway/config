@@ -60,9 +60,9 @@ input type:touchpad {
     natural_scroll enabled
     tap_button_map lrm
     click_method clickfinger
-    scroll_factor 0.8
+    scroll_factor 0.2
     accel_profile adaptive
-    pointer_accel 0.5
+    pointer_accel 0.0
 }
 
 input type:Mouse {

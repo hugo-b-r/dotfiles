@@ -25,3 +25,4 @@ alias yadmcom="yadm commit -S"
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 export PATH="$HOME/.cargo/bin:$HOME/programs:$HOME/.local/bin:$PATH:$HOME/programs/flutter/bin:$HOME/programs/android-studio/bin:$HOME/programs/dart-sdk/bin"
+export ANDROID_HOME="/home/hugo/Android/Sdk"

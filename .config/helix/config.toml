@@ -18,4 +18,4 @@ hidden = false
 render = true
 
 [editor.auto-save]
-focuslost = true
+focus-lost = true

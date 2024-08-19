@@ -3,7 +3,7 @@
 	name = Hugo Berthet-Rambaud
 	signingkey = /home/hugo/.ssh/id_ed25519
 [core]
-	editor = hx
+	editor = helix
 	autocrlf = input
 [credential "https://github.com"]
 	helper = 

@@ -1,8 +1,10 @@
 theme = 'onedark'
+# bogster_light
 
 [editor]
-line-number = "relative"
+#line-number = "relative"
 mouse = false
+rulers = [ 80 ]
 
 [editor.cursor-shape]
 insert = "bar"
@@ -14,3 +16,6 @@ hidden = false
 
 [editor.indent-guides]
 render = true
+
+[editor.auto-save]
+focuslost = true
